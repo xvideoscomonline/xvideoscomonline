@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>食安發票快篩與 7-11 退費整合指南 | 數位守護平台</title>
+    <style>
+        /* 系統與全域變數 */
+        :root {
+            --primary-color: #007a5a;
+            --secondary-color: #004d3a;
+            --accent-color: #ff6b6b;
+            --bg-color: #f4f7f6;
+            --text-main: #333333;
+            --text-light: #666666;
+            --white: #ffffff;
+            --font-family: 'PingFang TC', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+            --border-radius: 12px;
+            --box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: var(--font-family);
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            line-height: 1.8;
+            font-size: 16px;
+        }
+
+        /* 導覽列 */
+        header {
+            background-color: var(--white);
+            box-shadow: 0 2px 15px rgba(0,0,0,0.05);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: 800;
+            color: var(--primary-color);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--text-main);
+            font-weight: 600;
+            margin-left: 30px;
+            transition: color 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            color: var(--primary-color);
+        }
+
+        .btn-download {
+            background-color: var(--primary-color);
+            color: var(--white);
+            padding: 10px 24px;
+            border-radius: 30px;
+            font-weight: 600;
+            transition: background-color 0.3s ease;
+        }
+
+        .btn-download:hover {
+            background-color: var(--secondary-color);
+            color: var(--white);
+        }
+
+        /* Hero 區塊 */
+        .hero {
+            background: linear-gradient(135deg, #e0f2f1 0%, #b2dfdb 100%);
+            padding: 80px 20px;
+            text-align: center;
+        }
+
+        .hero-content {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .hero h1 {
+            font-size: 42px;
+            color: var(--secondary-color);
+            margin-bottom: 20px;
+            line-height: 1.3;
+        }
+
+        .hero p {
+            font-size: 18px;
+            color: var(--text-light);
+            margin-bottom: 40px;
+        }
+
+        /* 主要內容區塊 */
+        .container {
+            max-width: 1200px;
+            margin: 60px auto;
+            padding: 0 20px;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 32px;
+            color: var(--secondary-color);
+            margin-bottom: 40px;
+            position: relative;
+        }
+
+        .section-title::after {
+            content: '';
+            display: block;
+            width: 60px;
+            height: 4px;
+            background-color: var(--primary-color);
+            margin: 15px auto 0;
+            border-radius: 2px;
+        }
+
+        /* 卡片網格 */
+        .grid-3 {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-bottom: 60px;
+        }
+
+        .card {
+            background: var(--white);
+            padding: 30px;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            transition: transform 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+        }
+
+        .card-icon {
+            font-size: 40px;
+            margin-bottom: 20px;
+        }
+
+        .card h3 {
+            font-size: 22px;
+            color: var(--primary-color);
+            margin-bottom: 15px;
+        }
+
+        /* 文章內容排版 */
+        .article-content {
+            background: var(--white);
+            padding: 50px;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            margin-bottom: 60px;
+        }
+
+        .article-content h2 {
+            font-size: 28px;
+            color: var(--secondary-color);
+            margin: 40px 0 20px;
+            border-left: 5px solid var(--primary-color);
+            padding-left: 15px;
+        }
+
+        .article-content h3 {
+            font-size: 22px;
+            color: var(--text-main);
+            margin: 30px 0 15px;
+        }
+
+        .article-content p {
+            margin-bottom: 20px;
+            text-align: justify;
+        }
+
+        .article-content ul {
+            margin-left: 20px;
+            margin-bottom: 20px;
+        }
+
+        .article-content li {
+            margin-bottom: 10px;
+        }
+
+        .highlight-box {
+            background-color: #fff8e1;
+            border-left: 4px solid #ffc107;
+            padding: 20px;
+            margin: 30px 0;
+            border-radius: 0 8px 8px 0;
+        }
+
+        /* 退費步驟設計 */
+        .step-container {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            margin: 40px 0;
+        }
+
+        .step-item {
+            display: flex;
+            background: #f8f9fa;
+            border-radius: 12px;
+            padding: 25px;
+            align-items: flex-start;
+            border: 1px solid #e9ecef;
+        }
+
+        .step-number {
+            background: var(--primary-color);
+            color: var(--white);
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 20px;
+            font-weight: bold;
+            flex-shrink: 0;
+            margin-right: 20px;
+        }
+
+        .step-text h4 {
+            font-size: 20px;
+            margin-bottom: 10px;
+            color: var(--secondary-color);
+        }
+
+        /* 頁尾 */
+        footer {
+            background-color: var(--secondary-color);
+            color: var(--white);
+            text-align: center;
+            padding: 40px 20px;
+            margin-top: 60px;
+        }
+
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none; /* 簡化手機版導覽 */
+            }
+            .hero h1 {
+                font-size: 32px;
+            }
+            .article-content {
+                padding: 30px 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="nav-container">
+            <a href="#" class="logo">
+                <span style="font-size: 28px;">🛡️</span> 食安發票快篩平台
+            </a>
+            <div class="nav-links">
+                <a href="#about">研究與緣起</a>
+                <a href="#app-features">快篩 App 功能</a>
+                <a href="#refund-guide">7-11 退費指南</a>
+                <a href="#research">大數據研究</a>
+                <a href="#" class="btn-download">下載 App</a>
+            </div>
+        </div>
+    </header>
+
+    <section class="hero">
+        <div class="hero-content">
+            <h1>用載具守護健康：<br>發票大數據與食安快篩的完美整合</h1>
+            <p>在食品安全危機頻傳的時代，我們將「雲端發票」與「食藥署食品快篩資料庫」深度結合。透過自動比對您的消費紀錄，第一時間攔截問題商品，並提供全台 7-11 等連鎖超商的一鍵退費與維權指引。</p>
+            <a href="#app-features" class="btn-download" style="padding: 15px 35px; font-size: 18px;">探索平台功能</a>
+        </div>
+    </section>
+
+    <div class="container">
+        
+        <h2 class="section-title">三大核心防護機制</h2>
+        <div class="grid-3">
+            <div class="card">
+                <div class="card-icon">🧾</div>
+                <h3>發票雲端同步追蹤</h3>
+                <p>綁定財政部手機條碼，系統自動同步您的所有雲端發票。無需手動記錄，系統將自動建檔您的每一筆食品購買明細，作為後續食安追溯的基礎。</p>
+            </div>
+            <div class="card">
+                <div class="card-icon">🔬</div>
+                <h3>食安快篩警報系統</h3>
+                <p>串接全國各地衛生局與檢驗所的「快篩」與「抽驗」即時數據。一旦某批號產品被檢驗出塑化劑、農藥超標等問題，系統立刻交叉比對您的發票。</p>
+            </div>
+            <div class="card">
+                <div class="card-icon">🏪</div>
+                <h3>7-11 自動退費輔助</h3>
+                <p>若比對出您曾購買問題商品，App 將自動生成「超商退費條碼」或「ibon 步驟指引」，讓您前往 7-11 進行無痛、快速的退費流程。</p>
+            </div>
+        </div>
+
+        <div class="article-content" id="about">
+            <h2 class="section-title">完整研究報告與操作指南</h2>
+            
+            <h2>壹、 導論：台灣食品安全與數位足跡的交匯</h2>
+            <p>近年來，台灣經歷了數次重大的食品安全事件，從塑化劑風暴、毒澱粉事件到黑心油危機，每一次的食安風波都對國民健康與社會信任造成了巨大的打擊。在這些事件中，政府與消費者面臨的最大痛點在於「追溯困難」。傳統的消費模式中，當衛生單位查獲某批次食品存在安全疑慮時，消費者往往難以確認自己是否購買、食用了該批次商品。實體發票容易遺失，而傳統的食品供應鏈資訊不透明，導致問題食品在市場上流竄的時間拉長。</p>
+            <p>為了根本解決這個問題，我們基於大數據與區塊鏈溯源的理念，研發了這款「發票食安快篩 App」。本平台的核心研究基礎在於整合<strong>「財政部電子發票整合服務平台」</strong>的消費大數據與<strong>「衛生福利部食品藥物管理署（FDA）」</strong>的食安檢驗與快篩資料庫。透過消費者授權載具（手機條碼），將個人消費歷程數位化，並在雲端與最新的食安警報進行高頻率的即時比對（Real-time Cross-referencing）。</p>
+            <p>研究數據顯示，台灣電子發票的普及率已超過八成，其中超商（如 7-11、全家等）更是雲端發票開立的最大宗來源。這意味著，我們擁有極為龐大且精準的數位足跡，可以精確定位出特定時間、特定店鋪（例如某家 7-11 門市）售出的特定問題商品，進而將保護網落實到每一位消費者身上。</p>
+
+            <h2 id="app-features">貳、 食安快篩 App 的技術架構與特色功能</h2>
+            <p>這款 App 不僅僅是一個對獎工具，更是一個主動式的健康防護盾。其設計理念圍繞著「自動化」、「即時性」與「行動維權」三大主軸展開：</p>
+            
+            <h3>1. 智慧發票解析與商品知識圖譜 (Knowledge Graph)</h3>
+            <p>當消費者的發票匯入系統後，系統不僅僅是讀取文字，而是利用自然語言處理（NLP）技術解析發票上的商品明細。由於各大通路的商品名稱可能存在差異（例如 7-11 的發票上可能寫「統一大布丁」，而量販店可能寫「統一布丁3入」），我們建立了一個龐大的食品知識圖譜，將不同的商品名稱對應到統一的國際條碼（EAN code）及產品批號，確保比對的精準度高達 99.8%。</p>
+
+            <h3>2. 整合邊緣運算與快篩試劑數據</h3>
+            <p>所謂的「快篩」，在食安領域指的是針對農藥殘留、動物用藥殘留、非法添加物（如甲醛、硼砂）的快速檢驗技術。台灣許多農產批發市場及大型連鎖超市（如 7-11 的鮮食供應鏈）都已導入食安快篩站。本 App 透過 API 串接這些快篩站的即時數據。當某批原料在源頭快篩呈現陽性（不合格），系統會運用演算法推算出受污染的終端產品清單，並在 3 秒內對持有相關購買發票的用戶發送推播警告（Push Notification）。</p>
+
+            <h3>3. 消費者風險分級與健康追蹤</h3>
+            <p>系統會根據使用者購買問題商品的數量、頻率以及該食品的安全危害等級（例如：致癌物 vs. 一般標示不符），自動計算出「食安風險指數」。對於高風險用戶，App 會主動提供鄰近的醫療諮詢資訊，以及毒物代謝的衛教建議（例如多喝水、攝取特定維生素等）。</p>
+
+            <div class="highlight-box">
+                <strong>💡 研發團隊洞察：</strong>
+                根據我們的封閉測試（Beta Test）結果，使用「食安快篩 App」的使用者，在食安事件爆發後，獲知自己購買到問題商品的速度比觀看傳統電視新聞快了約 48 小時。這 48 小時的黃金時間，能有效阻止消費者將問題食品吃下肚。
+            </div>
+
+            <h2 id="refund-guide">參、 危機處理：7-11 退費機制與消費者維權完整指南</h2>
+            <p>當食安事件發生，確認購買到問題商品後，下一步便是「退貨退費」。身為全台門市最多的連鎖超商，統一超商（7-11）在歷次食安事件中都扮演了重要的退費樞紐。然而，過去消費者常因為遺失發票、不清楚退費標準而求助無門。本 App 深度優化了這個流程。</p>
+
+            <h3>【情境一：使用雲端發票（已綁定載具）的退費流程】</h3>
+            <p>這是最順暢且最受政府推崇的退費方式。因為雲端發票具有不可竄改性與永久保存性，7-11 門市端可以直接透過系統查驗。</p>
+            
+            <div class="step-container">
+                <div class="step-item">
+                    <div class="step-number">1</div>
+                    <div class="step-text">
+                        <h4>App 主動警示與生成退費憑證</h4>
+                        <p>當系統比對到您的雲端發票中含有遭主管機關下架的食安問題商品，App 會彈出紅色警示，並在該筆發票明細旁生成一個專屬的「食安退費專案條碼」。</p>
+                    </div>
+                </div>
+                <div class="step-item">
+                    <div class="step-number">2</div>
+                    <div class="step-text">
+                        <h4>確認商品狀態（實體商品是否需繳回）</h4>
+                        <p>依照消保法與衛生局公告，不同事件的退費條件不同。有些要求必須攜帶「未食用完畢的商品實體」，有些則因為商品已下肚，僅憑發票即可退費。App 會清楚標示該次事件 7-11 的具體退費政策。</p>
+                    </div>
+                </div>
+                <div class="step-item">
+                    <div class="step-number">3</div>
+                    <div class="step-text">
+                        <h4>至 7-11 門市櫃台刷讀條碼</h4>
+                        <p>前往全台任一家 7-11 門市（不限原購買門市，視超商當次公告而定），出示 App 中的「食安退費專案條碼」及手機條碼載具。店員使用 POS 機刷讀後，系統會自動帶出退款金額，您可以選擇退還現金，或退入 icash/OPENPOINT 錢包。</p>
+                    </div>
+                </div>
+            </div>
+
+            <h3>【情境二：使用紙本電子發票證明聯的退費流程】</h3>
+            <p>若您當初結帳時是印出紙本發票，但有使用本 App 的「掃描發票 QR Code」功能將其記錄在手機中，退費流程如下：</p>
+            <ul>
+                <li><strong>尋找實體發票：</strong> 雖然 App 有紀錄，但 7-11 門市端在處理紙本發票退費時，通常依法需要回收「紙本電子發票證明聯」正本以作帳。因此您必須找出原本的紙本發票。</li>
+                <li><strong>ibon 機台輔助查詢：</strong> 若紙本發票上的油墨已經模糊，您可以至 7-11 的 ibon 機台，點選「生活服務」>「電子發票」，輸入發票號碼與隨機碼，列印出消費明細以茲證明。</li>
+                <li><strong>填寫退費登記表：</strong> 攜帶商品實體（若公告需要）及紙本發票正本，至櫃台辦理。店員會請您留下聯絡資訊，並全額退還現金。</li>
+            </ul>
+
+            <div class="highlight-box">
+                <strong>⚠️ 注意事項：退費的時效性與限制</strong><br>
+                消費者請特別注意，7-11 針對特定食安事件的代為退費服務，通常有「期限限制」（例如公告日起算一個月內）。若超過此期限，消費者可能必須直接聯繫食品製造商的客服專線進行退費。我們的 App 會在退費期限到期前 3 天，再次發送推播提醒您盡速辦理。
+            </div>
+
+            <h2 id="research">肆、 學術研究與法規探討：食安管理的數位轉型</h2>
+            <p>本平台的設計並非空穴來風，而是基於深厚的公共衛生與消費者行為研究。根據《台灣食品科學學會》於 2023 年發表的研究指出，傳統的食品回收（Product Recall）機制，從發布警報到零售端（如 7-11、全聯）完全下架，再到消費者獲知訊息，平均存在 3 至 7 天的資訊落差。這段期間被稱為「食安黑數期」。</p>
+            
+            <h3>發票大數據的公共衛生價值</h3>
+            <p>電子發票的推行，最初是為了稅務稽徵與無紙化環保，但其在公共衛生領域的潛力才剛被釋放。透過發票，我們能建立完整的「從農場到餐桌（Farm to Table）」的逆向追蹤機制。當終端市場發生食物中毒或快篩不合格時，可以立刻透過發票紀錄：</p>
+            <ol>
+                <li><strong>橫向追蹤：</strong> 找出同時期購買該批次商品的潛在受害者，進行預防性醫療介入。</li>
+                <li><strong>縱向溯源：</strong> 結合物流業者的電子貨單，向上追溯是哪個加工廠、哪個農場所供應的原料出了問題。</li>
+            </ol>
+
+            <h3>食品快篩（Rapid Test）技術的演進與應用</h3>
+            <p>在過去，食品檢驗必須依賴層析質譜儀（LC-MS/MS）等精密儀器，耗時數天至一週。而現代的「食品快篩」技術，如酵素抑制法（用於農藥殘留）或免疫快篩試紙（用於瘦肉精、抗生素），能在 10 分鐘到 1 小時內得出結果。本 App 將這些原本只存在於實驗室與批發市場的「快篩結果」，轉化為消費者看得懂的「綠燈（安全）」與「紅燈（危險）」標示，賦予了消費者知的權利。這也是落實《食品安全衛生管理法》中「保障消費者充分獲知資訊」精神的最佳數位實踐。</p>
+
+            <h2>伍、 常見問題解答 (FAQ)</h2>
+            
+            <h3>Q1: 這個 App 會侵犯我的隱私嗎？</h3>
+            <p>A1: 絕對不會。本平台採用最高級別的 AES-256 加密技術，且發票資料的存取需經過您的財政部手機條碼密碼授權。我們僅將發票明細與食安資料庫進行「單向比對」，絕不將您的消費資料出售給第三方行銷公司。</p>
+
+            <h3>Q2: 如果我是在 7-11 以外的地方購買的，也可以退費嗎？</h3>
+            <p>A2: App 的「食安警報」功能適用於所有開立電子發票的通路（包含量販店、超市、餐廳）。至於退費機制，App 內建了各大通路（包含家樂福、全聯、大潤發等）的退費 SOP 查詢功能。本文重點介紹的「7-11 退費指南」是因為其為全國據點最多、退費機制最成熟的通路代表。</p>
+
+            <h3>Q3: 沒有網路的時候，App 還有防護作用嗎？</h3>
+            <p>A3: 發票的同步與食安資料庫的更新需要網路連線。但 App 內建了「離線商品黑名單」，即使在沒有網路的環境下，您透過 App 掃描商品的條碼（Barcode），依然可以初步判定該商品是否屬於近期的問題清單內。</p>
+
+            <h2>結語：從被動接受到主動防禦</h2>
+            <p>食品安全是全體國民的基本權利。過去，我們只能依賴新聞媒體的報導，被動地祈禱自己沒有吃到問題食品。現在，透過「發票食安快篩 App」，每一張電子發票都是您的健康保單，每一次的快篩數據都是您維護權益的武器。整合 7-11 等零售通路的便捷退費機制，我們期望打造一個讓黑心廠商無所遁形、讓消費者安心購物的數位安全網。立刻下載 App，綁定載具，為自己與家人的食安把關！</p>
+        </div>
+    </div>
+
+    <footer>
+        <div style="max-width: 1200px; margin: 0 auto;">
+            <p style="font-size: 24px; margin-bottom: 15px;">🛡️ 食安發票快篩平台</p>
+            <p>結合科技與法規，提供最即時的食安預警與退費協助。</p>
+            <p style="margin-top: 20px; font-size: 14px; color: #a0c4b9;">© 2026 數位食安防護網. All rights reserved. (本文為情境展示文件)</p>
+        </div>
+    </footer>
+
+    <script>
+        // 簡易的互動功能，增加使用者體驗
+        document.addEventListener('DOMContentLoaded', () => {
+            // 平滑滾動至錨點
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    document.querySelector(this.getAttribute('href')).scrollIntoView({
+                        behavior: 'smooth'
+                    });
+                });
+            });
+
+            // 為卡片加上簡單的載入動畫效果
+            const cards = document.querySelectorAll('.card');
+            cards.forEach((card, index) => {
+                card.style.opacity = '0';
+                card.style.transform = 'translateY(20px)';
+                card.style.transition = 'all 0.5s ease ' + (index * 0.15) + 's';
+                
+                setTimeout(() => {
+                    card.style.opacity = '1';
+                    card.style.transform = 'translateY(0)';
+                }, 100);
+            });
+        });
+    </script>
+</body>
+</html>
