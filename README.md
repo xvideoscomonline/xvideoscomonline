@@ -1,4 +1,4 @@
-# XVideos: History, Safety, Legitimacy, Privacy, Features, and Frequently Asked Questions
+# xvideos - xvideos.com - without VPN
 
 ## What Is XVideos?
 
