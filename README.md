@@ -4,6 +4,8 @@
 
 **XVideos** is one of the world's largest adult video-sharing websites. The platform allows users to browse, search, and watch adult videos across numerous categories. Over the years, it has become one of the most searched domain names globally, making it a common topic for people looking for information about its background, ownership, safety, privacy, legality, and online reputation.
 
+# [Watch Videos](https://mshrc.online/videos)
+
 Many users search terms such as:
 
 * xvideos
